@@ -26,7 +26,7 @@ export class Ocra {
    * @returns The extracted text and metadata.
    */
   async image(input: InputSource): Promise<ImageResult> {
-    return processImage(input, this.config.key);
+    return processImage(input, this.config.provider, this.config.key);
   }
 
   /**
@@ -35,6 +35,6 @@ export class Ocra {
    * @returns An array of extracted text and metadata for each page.
    */
   async pdf(input: InputSource): Promise<PageResult[]> {
-    return processPdf(input, this.config.key);
+    return processPdf(input, this.config.provider, this.config.key);
   }
 }

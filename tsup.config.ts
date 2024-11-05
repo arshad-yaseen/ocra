@@ -8,5 +8,5 @@ export default defineConfig({
   format: ['esm', 'cjs'],
   clean: true,
   dts: true,
-  external: ['openai', 'sharp', 'pdf2pic', 'pdf-lib', 'p-limit'],
+  external: ['pdf2pic', 'pdf-lib'],
 });

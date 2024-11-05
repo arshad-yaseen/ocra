@@ -1,6 +1,6 @@
 import {promises as fs} from 'fs';
 
-import {ImageResult, InputSource} from '../types';
+import {ImageResult, InputSource, Provider} from '../types';
 import {callLLM} from '../utils/call-llm';
 
 /**
@@ -11,6 +11,7 @@ import {callLLM} from '../utils/call-llm';
  */
 export async function processImage(
   input: InputSource,
+  provider: Provider,
   apiKey: string,
 ): Promise<ImageResult> {
   let imageBuffer: Buffer;
@@ -29,7 +30,7 @@ export async function processImage(
   }
 
   const base64Image = imageBuffer.toString('base64');
-  const content = await callLLM(apiKey, base64Image);
+  const content = await callLLM(apiKey, base64Image, provider);
 
   return {
     content,

@@ -7,8 +7,8 @@ import {fromPath} from 'pdf2pic';
 
 import {ConcurrencyLimit} from '../classes/concurrency-limit';
 import {MAX_CONCURRENT_REQUESTS} from '../constants';
-import {report} from '../logger';
-import {InputSource, PageResult} from '../types';
+import {_pm, report} from '../logger';
+import {InputSource, PageResult, Provider} from '../types';
 import {processImage} from './image';
 
 /**
@@ -19,6 +19,7 @@ import {processImage} from './image';
  */
 export async function processPdf(
   input: InputSource,
+  provider: Provider,
   apiKey: string,
 ): Promise<PageResult[]> {
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'ocra-'));
@@ -82,7 +83,7 @@ export async function processPdf(
       pages.map(({buffer, pageNum}) =>
         limiter.run(async () => {
           try {
-            const result = await processImage(buffer, apiKey);
+            const result = await processImage(buffer, provider, apiKey);
             return {
               page: pageNum,
               content: result.content,
@@ -97,7 +98,7 @@ export async function processPdf(
               page: pageNum,
               content: '',
               metadata: {
-                error: error instanceof Error ? error.message : String(error),
+                error: _pm(error),
                 pageNumber: pageNum,
               },
             };

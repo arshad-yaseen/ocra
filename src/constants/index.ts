@@ -1,3 +1,5 @@
+import {Provider} from '../types';
+
 /**
  * Supported OCR providers.
  */
@@ -35,7 +37,7 @@ export const RETRY_DELAY = 1_000;
 /**
  * API endpoints for supported providers.
  */
-export const API_ENDPOINTS = {
+export const API_ENDPOINTS: Record<Provider, string> = {
   openai: 'https://api.openai.com/v1/chat/completions',
 };
 

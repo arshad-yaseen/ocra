@@ -6,7 +6,7 @@ const ocra = new Ocra({
 });
 
 (async () => {
-  const contents = await ocra.pdf('./document.pdf');
+  const contents = await ocra.image('./image.jpg');
 
   console.log(contents);
 })();

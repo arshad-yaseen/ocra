@@ -1,0 +1,1 @@
+export const DEFAULT_MODEL_TEMPERATURE = 0.3;

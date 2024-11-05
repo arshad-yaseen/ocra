@@ -35,3 +35,17 @@ export const warn = (message: string): void => {
 export const log = (message: string): void => {
   console.log(`${BOLD}[OCRA] ${message}${RESET}`);
 };
+
+export const _pm = (message: unknown): string => {
+  if (message instanceof Error) {
+    return message.message;
+  }
+  if (typeof message === 'string') {
+    return message;
+  }
+  try {
+    return JSON.stringify(message);
+  } catch {
+    return 'Unknown Error';
+  }
+};

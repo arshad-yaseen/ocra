@@ -1,4 +1,6 @@
-import {SUPPORTED_PROVIDERS} from './constants';
+import {SUPPORTED_PROVIDERS} from '../constants';
+
+export * from './provider';
 
 /**
  * Supported OCR providers.

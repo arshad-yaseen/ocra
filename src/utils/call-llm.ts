@@ -1,12 +1,18 @@
 import {
   API_ENDPOINTS,
-  PROMPT_TEMPLATE,
   REQUEST_TIMEOUT,
   RETRY_ATTEMPTS,
   RETRY_DELAY,
 } from '../constants';
+import {_pm} from '../logger';
+import {ChatCompletion, Provider} from '../types';
 import {delay} from '../utils/delay';
 import {fetchWithTimeout} from './fetch-with-timeout';
+import {
+  createProviderHeaders,
+  createRequestBody,
+  parseProviderChatCompletion,
+} from './providers';
 
 /**
  * Calls the Language Model to extract text from the image.
@@ -17,8 +23,9 @@ import {fetchWithTimeout} from './fetch-with-timeout';
 export async function callLLM(
   apiKey: string,
   imageBase64: string,
+  provider: Provider,
 ): Promise<string> {
-  let lastError: Error | null = null;
+  let lastError: unknown | null = null;
 
   for (let attempt = 0; attempt < RETRY_ATTEMPTS; attempt++) {
     try {
@@ -26,28 +33,8 @@ export async function callLLM(
         API_ENDPOINTS.openai,
         {
           method: 'POST',
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'gpt-4o-mini',
-            messages: [
-              {
-                role: 'user',
-                content: [
-                  {type: 'text', text: PROMPT_TEMPLATE},
-                  {
-                    type: 'image_url',
-                    image_url: {
-                      url: `data:image/jpeg;base64,${imageBase64}`,
-                    },
-                  },
-                ],
-              },
-            ],
-            max_tokens: 2000,
-          }),
+          headers: createProviderHeaders(apiKey, provider),
+          body: JSON.stringify(createRequestBody(provider, imageBase64)),
         },
         REQUEST_TIMEOUT,
       );
@@ -56,17 +43,15 @@ export async function callLLM(
         throw new Error(`API request failed with status ${response.status}`);
       }
 
-      const data = await response.json();
-      return data.choices[0].message.content;
-    } catch (error: any) {
+      const data: ChatCompletion = await response.json();
+      return parseProviderChatCompletion(data, provider) ?? '';
+    } catch (error: unknown) {
       lastError = error;
       if (attempt < RETRY_ATTEMPTS - 1) {
         await delay(RETRY_DELAY * (attempt + 1)); // Exponential backoff
         continue;
       }
-      throw new Error(
-        `Failed after ${RETRY_ATTEMPTS} attempts: ${error.message}`,
-      );
+      throw new Error(`Failed after ${RETRY_ATTEMPTS} attempts: ${_pm(error)}`);
     }
   }
 
