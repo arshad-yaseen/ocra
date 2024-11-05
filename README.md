@@ -4,14 +4,45 @@ Fast, ultra-accurate text extraction from images and PDFs with structured markdo
 
 ## Features
 
-- 🚀 Exceptional text extraction from even the most challenging images and PDFs
-- 🔍 Handles blurry, low-resolution, and poorly scanned documents with ease
-- 📝 Structured markdown output that preserves original formatting
-- 🎯 Accurately processes complex layouts, tables, equations, and handwritten text
-- ⚡ Fast concurrent processing for multi-page documents
-- 🔄 Built-in reliability with automatic retries and exponential backoff
-- 🎨 Works with any image format, quality level, or scanning condition
-- ✍️ Robust font recognition for any text style, from pristine print to messy handwriting
+- 🚀 Extracts text accurately from any image or PDF, even low quality ones
+- 📝 Preserves formatting by outputting clean markdown
+- 🎯 Handles tables, equations, handwriting or any other content with ease
+- ⚡ Processes multiple pages quickly in parallel
+- 🔄 Automatically retries failed extractions
+- 🎨 Works with all common image formats
+- ✍️ Recognizes any font or writing style
+
+## Table of Contents
+
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+  - [macOS](#macos)
+  - [Windows](#windows)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Input Sources](#input-sources)
+- [API Reference](#api-reference)
+- [Error Handling](#error-handling)
+- [How it Works](#how-it-works)
+- [Used Models](#used-models)
+- [Contributing](#contributing)
+
+## Prerequisites
+
+Ocra requires GraphicsMagick and Ghostscript to be installed on your system for PDF processing.
+
+### macOS
+
+```bash
+brew install graphicsmagick ghostscript
+```
+
+### Windows
+
+Download and install the following:
+
+- [GraphicsMagick](http://www.graphicsmagick.org/)
+- [Ghostscript](https://www.ghostscript.com/download/gsdnld.html)
 
 ## Installation
 
@@ -24,7 +55,6 @@ npm install ocra
 ```typescript
 import {Ocra} from 'ocra';
 
-// Initialize Ocra with your provider config
 const ocra = new Ocra({
   provider: 'openai',
   key: 'your-api-key',
@@ -45,39 +75,20 @@ pdfResults.forEach(page => {
 
 Ocra accepts multiple input formats:
 
-- File paths: `'/path/to/image.jpg'`, `'C:\\Documents\\scan.pdf'`
-- URLs: `'https://example.com/image.png'`, `'https://files.com/doc.pdf'`
-- Base64 strings: `'data:image/jpeg;base64,/9j/4AAQSkZJRg...'`
-- Buffer objects: `Buffer.from(imageData)`, `fs.readFileSync('image.jpg')`
+| Input Type     | Example                                                          |
+| -------------- | ---------------------------------------------------------------- |
+| File paths     | `'/path/to/image.jpg'`, `'C:\\Documents\\scan.pdf'`              |
+| URLs           | `'https://example.com/image.png'`, `'https://files.com/doc.pdf'` |
+| Base64 strings | `'data:image/jpeg;base64,/9j/4AAQSkZJRg...'`                     |
+| Buffer objects | `Buffer.from(imageData)`, `fs.readFileSync('image.jpg')`         |
 
 ## API Reference
 
-### `new Ocra(config)`
-
-Creates a new Ocra instance.
-
-**Config Options:**
-
-- `provider`: OCR provider ('openai')
-- `key`: API key for the selected provider
-
-### `ocra.image(input)`
-
-Processes a single image.
-
-**Returns:** `Promise<ImageResult>`
-
-- `content`: Extracted text in markdown format
-- `metadata`: Processing metadata
-
-### `ocra.pdf(input)`
-
-Processes a PDF document.
-
-**Returns:** `Promise<PageResult[]>`
-
-- Array of results for each page
-- Each result includes page number, content, and metadata
+| Method              | Description                 | Parameters                                                                                             | Return Type             | Details                                                                                                    |
+| ------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------ | ----------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `new Ocra(config)`  | Creates a new Ocra instance | `config`: Object containing:<br>- `provider`: OCR provider ('openai')<br>- `key`: API key for provider | `Ocra`                  | Initializes Ocra with specified provider and credentials                                                   |
+| `ocra.image(input)` | Processes a single image    | `input`: File path, URL, base64 string, or Buffer                                                      | `Promise<ImageResult>`  | Returns object containing:<br>- `content`: Extracted text in markdown<br>- `metadata`: Processing metadata |
+| `ocra.pdf(input)`   | Processes a PDF document    | `input`: File path, URL, base64 string, or Buffer                                                      | `Promise<PageResult[]>` | Returns array of results with:<br>- Page number<br>- Content<br>- Metadata                                 |
 
 ## Error Handling
 
@@ -90,6 +101,30 @@ try {
   console.error('Processing failed:', error.message);
 }
 ```
+
+## How it Works
+
+Ocra processes documents in several steps:
+
+1. **Input Processing**
+
+   - Validates and normalizes input (file, URL, base64, or buffer)
+   - Converts PDFs to high-quality images for processing
+
+2. **Text Extraction**
+
+   - Sends images to the selected provider's vision model
+   - Processes multiple pages concurrently for PDFs
+
+3. **Output Formatting**
+   - Structures extracted text as clean markdown
+   - Includes metadata about the processing
+
+## Used Models
+
+| Provider | Model       |
+| -------- | ----------- |
+| OpenAI   | gpt-4o-mini |
 
 ## Contributing
 
