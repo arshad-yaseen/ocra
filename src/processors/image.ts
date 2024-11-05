@@ -2,6 +2,7 @@ import {promises as fs} from 'fs';
 
 import {ImageResult, InputSource, Provider} from '../types';
 import {callLLM} from '../utils/call-llm';
+import {removeCodeBlockMarkers} from '../utils/string';
 
 /**
  * Processes an image input and extracts text content.
@@ -33,7 +34,7 @@ export async function processImage(
   const content = await callLLM(apiKey, base64Image, provider);
 
   return {
-    content,
+    content: removeCodeBlockMarkers(content),
     metadata: {
       size: imageBuffer.length,
       timestamp: new Date().toISOString(),

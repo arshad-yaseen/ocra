@@ -29,16 +29,20 @@ export async function processPdf(
   try {
     // Save input to temporary PDF file
     let pdfBuffer: Buffer;
+
     if (typeof input === 'string') {
       if (input.startsWith('http')) {
         const response = await fetch(input);
         pdfBuffer = Buffer.from(await response.arrayBuffer());
+      } else if (input.startsWith('data:application/pdf')) {
+        pdfBuffer = Buffer.from(input.split(',')[1], 'base64');
       } else {
         pdfBuffer = await fs.readFile(input);
       }
     } else {
       pdfBuffer = input;
     }
+
     await fs.writeFile(tempPdfPath, pdfBuffer);
 
     const pdfDoc = await PDFDocument.load(pdfBuffer);
