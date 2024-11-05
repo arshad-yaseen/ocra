@@ -14,6 +14,7 @@ import {processImage} from './image';
 /**
  * Processes a PDF input and extracts text content from each page.
  * @param input - PDF input source.
+ * @param provider - The OCR provider to use.
  * @param apiKey - API key for authentication.
  * @returns An array of extracted text and metadata for each page.
  */
@@ -24,23 +25,38 @@ export async function processPdf(
 ): Promise<PageResult[]> {
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'ocra-'));
   const tempPdfPath = path.join(tempDir, 'temp.pdf');
-  const limiter = new ConcurrencyLimit(MAX_CONCURRENT_REQUESTS);
+
+  const conversionLimiter = new ConcurrencyLimit(MAX_CONCURRENT_REQUESTS);
+  const processingLimiter = new ConcurrencyLimit(MAX_CONCURRENT_REQUESTS);
 
   try {
     // Save input to temporary PDF file
     let pdfBuffer: Buffer;
 
     if (typeof input === 'string') {
-      if (input.startsWith('http')) {
-        const response = await fetch(input);
-        pdfBuffer = Buffer.from(await response.arrayBuffer());
-      } else if (input.startsWith('data:application/pdf')) {
-        pdfBuffer = Buffer.from(input.split(',')[1], 'base64');
-      } else {
-        pdfBuffer = await fs.readFile(input);
+      try {
+        if (input.startsWith('http')) {
+          const response = await fetch(input);
+          if (!response.ok) {
+            throw new Error(
+              `Failed to fetch PDF: ${response.status} ${response.statusText}`,
+            );
+          }
+          pdfBuffer = Buffer.from(await response.arrayBuffer());
+        } else if (input.startsWith('data:application/pdf')) {
+          pdfBuffer = Buffer.from(input.split(',')[1], 'base64');
+        } else {
+          pdfBuffer = await fs.readFile(input);
+        }
+      } catch (error: unknown) {
+        throw new Error(`Failed to read PDF input: ${_pm(error)}`);
       }
     } else {
       pdfBuffer = input;
+    }
+
+    if (!pdfBuffer?.length) {
+      throw new Error('Empty or invalid PDF buffer');
     }
 
     await fs.writeFile(tempPdfPath, pdfBuffer);
@@ -48,68 +64,73 @@ export async function processPdf(
     const pdfDoc = await PDFDocument.load(pdfBuffer);
     const pageCount = pdfDoc.getPageCount();
 
-    const options = {
+    const convert = fromPath(tempPdfPath, {
       density: 300,
       saveFilename: 'page',
       savePath: tempDir,
       format: 'png',
       width: 2480,
       height: 3508,
-    };
+    });
 
-    const convert = fromPath(tempPdfPath, options);
+    const processingPromises: Promise<PageResult>[] = [];
 
-    // Convert pages to images concurrently
-    const pages = await Promise.all(
-      Array.from({length: pageCount}, (_, i) => i + 1).map(pageNum =>
-        limiter.run(async () => {
-          try {
-            const result = await convert(pageNum);
-            if (!result?.path) {
-              throw new Error('Failed to convert PDF page to image');
-            }
-            const imageBuffer = await fs.readFile(result.path);
-            await fs.unlink(result.path);
-            return {
-              buffer: imageBuffer,
-              pageNum,
-            };
-          } catch (error) {
-            report(error);
-            throw error;
+    for (let pageNum = 1; pageNum <= pageCount; pageNum++) {
+      // Start conversion without waiting for processing to finish
+      await conversionLimiter.run(async () => {
+        try {
+          // Convert page to image
+          const conversionResult = await convert(pageNum);
+          if (!conversionResult?.path) {
+            throw new Error('Failed to convert PDF page to image');
           }
-        }),
-      ),
-    );
+          const imageBuffer = await fs.readFile(conversionResult.path);
+          await fs.unlink(conversionResult.path);
 
-    // Process all pages concurrently
-    const results = await Promise.all(
-      pages.map(({buffer, pageNum}) =>
-        limiter.run(async () => {
-          try {
-            const result = await processImage(buffer, provider, apiKey);
-            return {
-              page: pageNum,
-              content: result.content,
-              metadata: {
-                ...result.metadata,
-                pageNumber: pageNum,
-              },
-            };
-          } catch (error: unknown) {
-            report(error);
-            return {
+          // Start processing the image in the background
+          const processingPromise = processingLimiter.run(async () => {
+            try {
+              const processResult = await processImage(
+                imageBuffer,
+                provider,
+                apiKey,
+              );
+              return {
+                page: pageNum,
+                ...processResult,
+              } satisfies PageResult;
+            } catch (error: unknown) {
+              report(error);
+              return {
+                page: pageNum,
+                content: '',
+                metadata: {
+                  error: _pm(error),
+                },
+              } satisfies PageResult;
+            }
+          });
+
+          // Collect the processing promise
+          processingPromises.push(processingPromise);
+        } catch (error: unknown) {
+          report(error);
+          // In case of conversion error, add a failed result
+          processingPromises.push(
+            Promise.resolve({
               page: pageNum,
               content: '',
               metadata: {
                 error: _pm(error),
-                pageNumber: pageNum,
               },
-            };
-          }
-        }),
-      ),
-    );
+            } satisfies PageResult),
+          );
+        }
+      });
+    }
+
+    // Wait for all processing tasks to complete
+    const results = await Promise.all(processingPromises);
 
     return results.sort((a, b) => a.page - b.page);
   } finally {

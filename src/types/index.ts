@@ -25,8 +25,6 @@ export interface OCRMetadata {
   timestamp?: string;
   /** Size of the processed file in bytes */
   size?: number;
-  /** Page number for multi-page documents */
-  pageNumber?: number;
   /** Error message if processing failed */
   error?: string;
 }

@@ -6,15 +6,6 @@ import {Provider} from '../types';
 export const SUPPORTED_PROVIDERS = ['openai'] as const;
 
 /**
- * Supported image MIME types.
- */
-export const SUPPORTED_IMAGE_TYPES = [
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-] as const;
-
-/**
  * Maximum number of concurrent API requests.
  */
 export const MAX_CONCURRENT_REQUESTS = 100;

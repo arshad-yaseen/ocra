@@ -3,6 +3,7 @@
 import {useState} from 'react';
 
 import FileUpload from '@/components/file-upload';
+import {Button} from '@/components/ui/button';
 import {ImageResult, PageResult} from 'ocra';
 
 // Preview component for displaying uploaded file
@@ -11,12 +12,12 @@ const Preview = ({url, type}: {url: string; type: 'image' | 'pdf'}) => {
     <img
       src={url}
       alt="Preview"
-      className="w-full h-full object-contain rounded-lg"
+      className="w-full h-full object-contain rounded-lg shadow-sm"
     />
   ) : (
-    <iframe
-      src={url}
-      className="w-full h-full rounded-lg border-0"
+    <object
+      data={url}
+      className="w-full h-full rounded-lg border-0 shadow-sm"
       title="PDF preview"
     />
   );
@@ -41,8 +42,8 @@ const ContentDisplay = ({
   }
 
   return (
-    <div className="h-full overflow-y-auto">
-      <div className="whitespace-pre-wrap space-y-6">
+    <div className="h-full overflow-y-auto px-4">
+      <div className="whitespace-pre-wrap space-y-6 py-4">
         {contents?.map((content, i) => (
           <div key={i} className="text-base leading-relaxed">
             {content.content}
@@ -60,13 +61,13 @@ const Landing = ({
   onUpload: (url: string, type: 'image' | 'pdf') => void;
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 md:p-12 lg:p-20">
-      <div className="max-w-3xl w-full space-y-8">
-        <div className="space-y-4 text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tighter">
+    <div className="flex flex-col items-center justify-center min-h-[100dvh] px-4 py-8 sm:px-8 md:px-12 lg:px-20">
+      <div className="max-w-3xl w-full space-y-10">
+        <div className="space-y-6 text-center">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tighter">
             Ocra
           </h1>
-          <p className="text-lg sm:text-xl text-neutral-500 leading-relaxed">
+          <p className="text-lg sm:text-xl text-neutral-500 leading-relaxed max-w-2xl mx-auto">
             Fast, ultra-accurate text extraction from any image{' '}
             <br className="hidden sm:block" />
             or PDF, even challenging ones, with structured markdown output.
@@ -102,13 +103,25 @@ export default function Home() {
     }
   };
 
+  const handleReset = () => {
+    setContents(undefined);
+    setPreviewUrl(undefined);
+    setFileType(undefined);
+    setIsLoading(false);
+  };
+
   if (previewUrl && fileType) {
     return (
-      <div className="flex flex-col lg:flex-row min-h-screen p-4 sm:p-6 md:p-8 lg:p-12 gap-6 lg:gap-8">
-        <div className="w-full lg:w-1/2 h-[40vh] lg:h-[85vh]">
-          <Preview url={previewUrl} type={fileType} />
+      <div className="flex flex-col lg:flex-row min-h-[100dvh] p-4 sm:p-6 md:p-8 lg:p-12 gap-6 lg:gap-12">
+        <div className="w-full lg:w-1/2 h-[45vh] lg:h-[90vh] bg-neutral-50 rounded-xl p-4">
+          <div className="relative h-full">
+            <Preview url={previewUrl} type={fileType} />
+            <Button onClick={handleReset} className="absolute top-2 right-2">
+              Upload New File
+            </Button>
+          </div>
         </div>
-        <div className="w-full lg:w-1/2 h-[40vh] lg:h-[85vh]">
+        <div className="w-full lg:w-1/2 h-[45vh] lg:h-[90vh] bg-neutral-50 rounded-xl">
           <ContentDisplay contents={contents} isLoading={isLoading} />
         </div>
       </div>

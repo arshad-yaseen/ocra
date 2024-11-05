@@ -30,7 +30,7 @@ export async function callLLM(
   for (let attempt = 0; attempt < RETRY_ATTEMPTS; attempt++) {
     try {
       const response = await fetchWithTimeout(
-        API_ENDPOINTS.openai,
+        API_ENDPOINTS[provider],
         {
           method: 'POST',
           headers: createProviderHeaders(apiKey, provider),
