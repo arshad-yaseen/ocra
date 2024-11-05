@@ -4,49 +4,147 @@ import {useState} from 'react';
 
 import FileUpload from '@/components/file-upload';
 import {Button} from '@/components/ui/button';
+import {cn} from '@/lib/utils';
+import {motion} from 'framer-motion';
 import {ImageResult, PageResult} from 'ocra';
+import Markdown from 'react-markdown';
+import rehypeKatex from 'rehype-katex';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
 
-// Preview component for displaying uploaded file
-const Preview = ({url, type}: {url: string; type: 'image' | 'pdf'}) => {
-  return type === 'image' ? (
-    <img
-      src={url}
-      alt="Preview"
-      className="w-full h-full object-contain rounded-lg shadow-sm"
-    />
-  ) : (
-    <object
-      data={url}
-      className="w-full h-full rounded-lg border-0 shadow-sm"
-      title="PDF preview"
-    />
-  );
-};
+const Preview = ({url, type}: {url: string; type: 'image' | 'pdf'}) => (
+  <div className="h-full w-full overflow-auto">
+    <div className="min-h-full w-full flex items-center justify-center p-4">
+      {type === 'image' ? (
+        <img
+          src={url}
+          alt="Preview"
+          className="max-h-full max-w-full object-contain rounded-lg shadow-sm"
+        />
+      ) : (
+        <object
+          data={url}
+          className="w-full h-full rounded-lg border-0 shadow-sm"
+          type="application/pdf"
+          aria-label="PDF preview">
+          <p>PDF preview is not available.</p>
+        </object>
+      )}
+    </div>
+  </div>
+);
 
-// Content display component
+const SkeletonLoader = () => (
+  <div className="p-4 space-y-4">
+    {[...Array(15)].map((_, i) => (
+      <motion.div
+        key={i}
+        className="flex items-center space-x-2"
+        initial={{opacity: 0, y: 20}}
+        animate={{opacity: 1, y: 0}}
+        transition={{
+          delay: i * 0.2,
+          duration: 0.8,
+          ease: [0.34, 1.56, 0.64, 1],
+        }}>
+        <motion.div
+          className="h-4 bg-gradient-to-r from-neutral-200 via-neutral-300 to-neutral-200 rounded-sm"
+          style={{width: `${Math.random() * 20 + 40}%`}}
+          animate={{
+            opacity: [0.8, 0.4, 0.8],
+          }}
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+        <motion.div
+          className="h-4 bg-gradient-to-r from-neutral-200 via-neutral-300 to-neutral-200 rounded-sm"
+          style={{width: `${Math.random() * 20 + 30}%`}}
+          animate={{
+            opacity: [0.8, 0.4, 0.8],
+          }}
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: 0.2,
+          }}
+        />
+      </motion.div>
+    ))}
+  </div>
+);
+
 const ContentDisplay = ({
   contents,
   isLoading,
 }: {
-  contents?: (PageResult | ImageResult)[];
+  contents: PageResult[] | ImageResult[];
   isLoading: boolean;
 }) => {
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <div className="text-xl text-neutral-500 animate-pulse">
-          Extracting...
-        </div>
+      <div className="h-full overflow-auto">
+        <SkeletonLoader />
       </div>
     );
   }
 
   return (
-    <div className="h-full overflow-y-auto px-4">
-      <div className="whitespace-pre-wrap space-y-6 py-4">
+    <div className="h-full overflow-auto">
+      <div className="p-4 space-y-6">
         {contents?.map((content, i) => (
-          <div key={i} className="text-base leading-relaxed">
-            {content.content}
+          <div key={i} className="border-b pb-4 mb-4 last:border-b-0">
+            {'page' in content && (
+              <div className="text-sm text-neutral-500 mb-2">
+                Page {content.page}
+              </div>
+            )}
+            <Markdown
+              className="prose max-w-none"
+              remarkPlugins={[remarkMath, remarkGfm]}
+              rehypePlugins={[rehypeKatex]}
+              components={{
+                table: ({
+                  className,
+                  ...props
+                }: React.HTMLAttributes<HTMLTableElement>) => (
+                  <div className="w-full overflow-hidden rounded-lg border border-neutral-300">
+                    <table
+                      className={cn('w-full !my-0', className)}
+                      {...props}
+                    />
+                  </div>
+                ),
+                tr: ({
+                  className,
+                  ...props
+                }: React.HTMLAttributes<HTMLTableRowElement>) => (
+                  <tr className={cn('m-0  p-0', className)} {...props} />
+                ),
+                th: ({className, ...props}) => (
+                  <th
+                    className={cn(
+                      ' px-4 py-2 text-left font-semibold  [&[align=center]]:text-center [&[align=right]]:text-right',
+                      className,
+                    )}
+                    {...props}
+                  />
+                ),
+                td: ({className, ...props}) => (
+                  <td
+                    className={cn(
+                      'border-t px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right',
+                      className,
+                    )}
+                    {...props}
+                  />
+                ),
+              }}>
+              {content.content}
+            </Markdown>
           </div>
         ))}
       </div>
@@ -54,36 +152,33 @@ const ContentDisplay = ({
   );
 };
 
-// Landing component
 const Landing = ({
   onUpload,
 }: {
   onUpload: (url: string, type: 'image' | 'pdf') => void;
-}) => {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-[100dvh] px-4 py-8 sm:px-8 md:px-12 lg:px-20">
-      <div className="max-w-3xl w-full space-y-10">
-        <div className="space-y-6 text-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tighter">
-            Ocra
-          </h1>
-          <p className="text-lg sm:text-xl text-neutral-500 leading-relaxed max-w-2xl mx-auto">
-            Fast, ultra-accurate text extraction from any image{' '}
-            <br className="hidden sm:block" />
-            or PDF, even challenging ones, with structured markdown output.
-          </p>
-        </div>
-        <FileUpload onUpload={onUpload} />
+}) => (
+  <div className="flex flex-col items-center justify-center min-h-screen px-4 py-8 sm:px-8 md:px-12 lg:px-20 bg-neutral-50">
+    <div className="max-w-3xl w-full space-y-10">
+      <div className="space-y-6 text-center">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
+          Ocra
+        </h1>
+        <p className="text-lg sm:text-xl text-neutral-500 leading-relaxed max-w-2xl mx-auto">
+          Fast, ultra-accurate text extraction from any image{' '}
+          <br className="hidden sm:block" />
+          or PDF, even challenging ones, with structured markdown output.
+        </p>
       </div>
+      <FileUpload onUpload={onUpload} />
     </div>
-  );
-};
+  </div>
+);
 
 export default function Home() {
-  const [contents, setContents] = useState<PageResult[] | ImageResult[]>();
+  const [contents, setContents] = useState<PageResult[] | ImageResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState<string>();
-  const [fileType, setFileType] = useState<'image' | 'pdf'>();
+  const [previewUrl, setPreviewUrl] = useState<string>('');
+  const [fileType, setFileType] = useState<'image' | 'pdf' | null>(null);
 
   const handleUpload = async (url: string, type: 'image' | 'pdf') => {
     setIsLoading(true);
@@ -104,26 +199,31 @@ export default function Home() {
   };
 
   const handleReset = () => {
-    setContents(undefined);
-    setPreviewUrl(undefined);
-    setFileType(undefined);
+    setContents([]);
+    setPreviewUrl('');
+    setFileType(null);
     setIsLoading(false);
   };
 
   if (previewUrl && fileType) {
     return (
-      <div className="flex flex-col lg:flex-row min-h-[100dvh] p-4 sm:p-6 md:p-8 lg:p-12 gap-6 lg:gap-12">
-        <div className="w-full lg:w-1/2 h-[45vh] lg:h-[90vh] bg-neutral-50 rounded-xl p-4">
-          <div className="relative h-full">
-            <Preview url={previewUrl} type={fileType} />
-            <Button onClick={handleReset} className="absolute top-2 right-2">
-              Upload New File
-            </Button>
+      <div className="flex flex-col h-screen max-h-screen">
+        <header className="flex-none flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12 gap-6 pt-6">
+          <h1 className="text-2xl font-bold">Ocra</h1>
+          <Button onClick={handleReset} variant="outline">
+            Upload New File
+          </Button>
+        </header>
+        <main className="flex-1 min-h-0 px-4 sm:px-6 md:px-8 lg:px-12 py-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
+            <div className="bg-background rounded-xl border border-neutral-300 overflow-hidden">
+              <Preview url={previewUrl} type={fileType} />
+            </div>
+            <div className="bg-background rounded-xl border border-neutral-300 overflow-hidden">
+              <ContentDisplay contents={contents} isLoading={isLoading} />
+            </div>
           </div>
-        </div>
-        <div className="w-full lg:w-1/2 h-[45vh] lg:h-[90vh] bg-neutral-50 rounded-xl">
-          <ContentDisplay contents={contents} isLoading={isLoading} />
-        </div>
+        </main>
       </div>
     );
   }
