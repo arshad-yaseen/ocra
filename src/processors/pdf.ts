@@ -7,6 +7,7 @@ import {fromPath} from 'pdf2pic';
 
 import {ConcurrencyLimit} from '../classes/concurrency-limit';
 import {MAX_CONCURRENT_REQUESTS} from '../constants';
+import {report} from '../logger';
 import {InputSource, PageResult} from '../types';
 import {processImage} from './image';
 
@@ -69,7 +70,7 @@ export async function processPdf(
               pageNum,
             };
           } catch (error) {
-            console.error(`Error converting page ${pageNum}:`, error);
+            report(error);
             throw error;
           }
         }),
@@ -90,13 +91,13 @@ export async function processPdf(
                 pageNumber: pageNum,
               },
             };
-          } catch (error: any) {
-            console.error(`Error processing page ${pageNum}:`, error);
+          } catch (error: unknown) {
+            report(error);
             return {
               page: pageNum,
               content: '',
               metadata: {
-                error: error.message || String(error),
+                error: error instanceof Error ? error.message : String(error),
                 pageNumber: pageNum,
               },
             };
@@ -111,7 +112,7 @@ export async function processPdf(
     try {
       await fs.rm(tempDir, {recursive: true, force: true});
     } catch (error) {
-      console.error('Error cleaning up temporary directory:', error);
+      report(error);
     }
   }
 }

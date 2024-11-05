@@ -1,6 +1,3 @@
-/**
- * Base class for Ocra errors.
- */
 export class OcraError extends Error {
   constructor(message: string) {
     super(message);
@@ -8,9 +5,6 @@ export class OcraError extends Error {
   }
 }
 
-/**
- * Error thrown when an invalid provider is used.
- */
 export class InvalidProviderError extends OcraError {
   constructor(provider: string) {
     super(`Invalid provider: ${provider}`);
@@ -18,9 +12,6 @@ export class InvalidProviderError extends OcraError {
   }
 }
 
-/**
- * Error thrown when an invalid input is provided.
- */
 export class InvalidInputError extends OcraError {
   constructor(message: string) {
     super(message);
