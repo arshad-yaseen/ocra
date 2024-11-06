@@ -18,7 +18,8 @@
     "format": "prettier --write .",
     "validate": "pnpm build && pnpm format && pnpm tsc && pnpm lint",
     "release": "release-it",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "node scripts/install-image-processors.js"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.5.0",
