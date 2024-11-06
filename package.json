@@ -1,5 +1,5 @@
 {
-  "name": "ocra",
+  "name": "ocr",
   "version": "0.1.0",
   "description": "Fast, ultra-accurate text extraction from any image or PDF, even challenging ones, with structured markdown output.",
   "main": "./build/index.js",
