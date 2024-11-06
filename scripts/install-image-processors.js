@@ -44,8 +44,9 @@ async function main() {
         );
     }
   } catch (error) {
-    console.error('An error occurred:', error);
-    console.log('Please install GraphicsMagick and Ghostscript manually from:');
+    console.log(
+      'Cannot install image processors automatically, please install GraphicsMagick and Ghostscript manually from:',
+    );
     console.log('GraphicsMagick: http://www.graphicsmagick.org/download.html');
     console.log(
       'Ghostscript: https://www.ghostscript.com/download/gsdnld.html',
