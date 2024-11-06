@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "preinstall": "node scripts/change-ocra-package.js"
+    "preinstall": "node scripts/change-ocr-llm-package.js"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.0",
@@ -17,7 +17,7 @@
     "framer-motion": "^11.11.11",
     "lucide-react": "^0.454.0",
     "next": "15.0.2",
-    "ocra": "workspace:*",
+    "ocr-llm": "workspace:*",
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
     "react-markdown": "^9.0.1",
@@ -25,7 +25,8 @@
     "remark-gfm": "^4.0.0",
     "remark-math": "^6.0.0",
     "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "ocrllm": "0.1.0"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -1,18 +1,18 @@
-export class OcraError extends Error {
+export class OcrLLMError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'OcraError';
+    this.name = 'OcrLLMError';
   }
 }
 
-export class InvalidProviderError extends OcraError {
+export class InvalidProviderError extends OcrLLMError {
   constructor(provider: string) {
     super(`Invalid provider: ${provider}`);
     this.name = 'InvalidProviderError';
   }
 }
 
-export class InvalidInputError extends OcraError {
+export class InvalidInputError extends OcrLLMError {
   constructor(message: string) {
     super(message);
     this.name = 'InvalidInputError';

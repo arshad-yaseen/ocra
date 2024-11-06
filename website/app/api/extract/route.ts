@@ -1,6 +1,6 @@
-import {Ocra} from 'ocra';
+import {OcrLLM} from 'ocr-llm';
 
-const ocra = new Ocra({
+const ocrllm = new OcrLLM({
   provider: 'openai',
   key: process.env.OPENAI_API_KEY!,
 });
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     }
 
     const result =
-      type === 'image' ? await ocra.image(url) : await ocra.pdf(url);
+      type === 'image' ? await ocrllm.image(url) : await ocrllm.pdf(url);
 
     return Response.json({result});
   } catch (error) {

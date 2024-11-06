@@ -3,12 +3,12 @@ const path = require('path');
 
 const rootPackagePath = path.join(__dirname, '..', '..', 'package.json');
 const rootPackage = JSON.parse(fs.readFileSync(rootPackagePath, 'utf8'));
-const ocraVersion = rootPackage.version;
+const ocrllmVersion = rootPackage.version;
 
 const websitePackagePath = path.join(__dirname, '..', 'package.json');
 const websitePackage = JSON.parse(fs.readFileSync(websitePackagePath, 'utf8'));
 
-websitePackage.dependencies.ocra = ocraVersion;
+websitePackage.dependencies.ocrllm = ocrllmVersion;
 
 fs.writeFileSync(
   websitePackagePath,
@@ -16,4 +16,4 @@ fs.writeFileSync(
   'utf8',
 );
 
-console.log(`Updated ocra package version to ${ocraVersion}`);
+console.log(`Updated ocr-llm package version to ${ocrllmVersion}`);

@@ -7,7 +7,7 @@ Please fill out this template with all the relevant information so we can
 understand what's going on and fix the issue.
 -->
 
-- `ocra` version:
+- `ocr-llm` version:
 - `node` version:
 
 Relevant code or config

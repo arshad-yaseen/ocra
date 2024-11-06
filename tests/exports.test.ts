@@ -1,16 +1,16 @@
 import {describe, expect, it} from 'vitest';
 
-import * as Ocra from '../src';
+import * as OcrLLM from '../src';
 
-describe('Ocra exports', () => {
-  it('should export Ocra class', () => {
-    expect(Ocra.Ocra).toBeDefined();
-    expect(typeof Ocra.Ocra).toBe('function');
+describe('OcrLLM exports', () => {
+  it('should export OcrLLM class', () => {
+    expect(OcrLLM.OcrLLM).toBeDefined();
+    expect(typeof OcrLLM.OcrLLM).toBe('function');
   });
 
   it('should not export any unexpected items', () => {
-    const expectedExports = ['Ocra'];
-    const actualExports = Object.keys(Ocra);
+    const expectedExports = ['OcrLLM'];
+    const actualExports = Object.keys(OcrLLM);
 
     expect(actualExports).toEqual(expect.arrayContaining(expectedExports));
     expect(actualExports.length).toBe(expectedExports.length);

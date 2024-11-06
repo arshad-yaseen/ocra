@@ -16,7 +16,7 @@ export const report = (error: unknown): {message: string; stack?: string} => {
     errorMessage = 'An unknown error occurred';
   }
 
-  const formattedError = `${RED}${BOLD}[OCRA ERROR] ${errorMessage}${RESET}`;
+  const formattedError = `${RED}${BOLD}[OCRLLM ERROR] ${errorMessage}${RESET}`;
   if (errorStack) {
     console.error(
       `${formattedError}\n${RED}Stack trace:${RESET}\n${errorStack}`,
@@ -29,11 +29,11 @@ export const report = (error: unknown): {message: string; stack?: string} => {
 };
 
 export const warn = (message: string): void => {
-  console.warn(`${YELLOW}${BOLD}[OCRA WARN] ${message}${RESET}`);
+  console.warn(`${YELLOW}${BOLD}[OCRLLM WARN] ${message}${RESET}`);
 };
 
 export const log = (message: string): void => {
-  console.log(`${BOLD}[OCRA] ${message}${RESET}`);
+  console.log(`${BOLD}[OCRLLM] ${message}${RESET}`);
 };
 
 export const _pm = (message: unknown): string => {

@@ -23,7 +23,7 @@ export async function processPdf(
   provider: Provider,
   apiKey: string,
 ): Promise<PageResult[]> {
-  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'ocra-'));
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'ocr-llm-'));
   const tempPdfPath = path.join(tempDir, 'temp.pdf');
 
   const conversionLimiter = new ConcurrencyLimit(MAX_CONCURRENT_REQUESTS);

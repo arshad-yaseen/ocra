@@ -2,18 +2,18 @@ import {SUPPORTED_PROVIDERS} from '../constants';
 import {InvalidProviderError} from '../errors';
 import {processImage} from '../processors/image';
 import {processPdf} from '../processors/pdf';
-import {ImageResult, InputSource, OcraConfig, PageResult} from '../types';
+import {ImageResult, InputSource, OcrLLMConfig, PageResult} from '../types';
 
 /**
- * Main class for the Ocra OCR engine.
+ * Main class for the OcrLLM OCR engine.
  */
-export class Ocra {
-  private readonly config: OcraConfig;
+export class OcrLLM {
+  private readonly config: OcrLLMConfig;
 
   /**
-   * @param config - Configuration options for Ocra.
+   * @param config - Configuration options for OcrLLM.
    */
-  constructor(config: OcraConfig) {
+  constructor(config: OcrLLMConfig) {
     if (!SUPPORTED_PROVIDERS.includes(config.provider)) {
       throw new InvalidProviderError(config.provider);
     }

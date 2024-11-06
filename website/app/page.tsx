@@ -6,7 +6,7 @@ import FileUpload from '@/components/file-upload';
 import {Button} from '@/components/ui/button';
 import {cn} from '@/lib/utils';
 import {motion} from 'framer-motion';
-import {ImageResult, PageResult} from 'ocra';
+import {ImageResult, PageResult} from 'ocr-llm';
 import Markdown from 'react-markdown';
 import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
@@ -161,7 +161,7 @@ const Landing = ({
     <div className="max-w-3xl w-full space-y-10">
       <div className="space-y-6 text-center">
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
-          Ocra
+          OcrLLM
         </h1>
         <p className="text-lg sm:text-xl text-neutral-500 leading-relaxed max-w-2xl mx-auto">
           Fast, ultra-accurate text extraction from any image{' '}
@@ -209,7 +209,7 @@ export default function Home() {
     return (
       <div className="flex flex-col h-screen max-h-screen">
         <header className="flex-none flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12 gap-6 pt-6">
-          <h1 className="text-2xl font-bold">Ocra</h1>
+          <h1 className="text-2xl font-bold">OcrLLM</h1>
           <Button onClick={handleReset} variant="outline">
             Upload New File
           </Button>

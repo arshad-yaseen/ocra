@@ -15,7 +15,7 @@ const fontMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Ocra',
+  title: 'OcrLLM',
   description:
     'Fast, ultra-accurate text extraction from any image or PDF, even challenging ones, with structured markdown output.',
 };

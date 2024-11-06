@@ -1,6 +1,6 @@
-export {Ocra} from './core/ocra';
+export {OcrLLM} from './core/ocr-llm';
 export {
-  OcraConfig,
+  OcrLLMConfig,
   ImageResult,
   PageResult,
   InputSource,

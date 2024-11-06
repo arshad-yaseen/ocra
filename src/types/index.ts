@@ -8,9 +8,9 @@ export * from './provider';
 export type Provider = (typeof SUPPORTED_PROVIDERS)[number];
 
 /**
- * Configuration options for Ocra.
+ * Configuration options for OcrLLM.
  */
-export interface OcraConfig {
+export interface OcrLLMConfig {
   /** The OCR provider to use. */
   provider: Provider;
   /** API key for the selected provider. */
