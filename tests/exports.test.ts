@@ -9,11 +9,18 @@ describe('OcrLLM exports', () => {
   });
 
   it('should not export any unexpected items', () => {
-    const expectedExports = ['OcrLLM'];
+    const expectedExports = [
+      'OcrLLM',
+      'OcrLLMConfig',
+      'ImageResult',
+      'PageResult',
+      'InputSource',
+      'OCRMetadata',
+      'Provider',
+    ];
     const actualExports = Object.keys(OcrLLM);
 
     expect(actualExports).toEqual(expect.arrayContaining(expectedExports));
     expect(actualExports.length).toBe(expectedExports.length);
   });
 });
-``;
