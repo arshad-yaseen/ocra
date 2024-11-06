@@ -1,11 +1,18 @@
 
 
-## [0.3.2](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.1...0.3.2) (2024-11-06)
+## [0.3.3](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.2...0.3.3) (2024-11-06)
 
 
 ### 🔧 Maintenance
 
-* include scripts in build ([f9cabd3](https://github.com/arshad-yaseen/ocr-llm/commit/f9cabd31087613e8d4e986693af512283a067749))
+* install ocr-llm to website ([a9832ec](https://github.com/arshad-yaseen/ocr-llm/commit/a9832ec3e9ccdd32bf6c418d6b76a3a9f9e5aed4))
+* update ([b93f401](https://github.com/arshad-yaseen/ocr-llm/commit/b93f4014effd1f65cc68660379ba33952612e548))
+
+## [0.3.2](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.1...0.3.2) (2024-11-06)
+
+### 🔧 Maintenance
+
+- include scripts in build ([f9cabd3](https://github.com/arshad-yaseen/ocr-llm/commit/f9cabd31087613e8d4e986693af512283a067749))
 
 ## [0.3.1](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.0...0.3.1) (2024-11-06)
 
