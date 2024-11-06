@@ -4,6 +4,18 @@ const os = require('os');
 const {exec} = require('child_process');
 const readline = require('readline');
 
+function isNonInteractive() {
+  return !process.stdin.isTTY || process.env.CI;
+}
+
+async function isSudoAvailable() {
+  return new Promise(resolve => {
+    exec('sudo -n true', error => {
+      resolve(!error);
+    });
+  });
+}
+
 async function main() {
   try {
     const platform = os.platform();
@@ -59,33 +71,46 @@ async function guideWindows() {
       if (!isGmInstalled) toInstall.push('graphicsmagick');
       if (!isGsInstalled) toInstall.push('ghostscript');
 
-      const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-      });
-
-      rl.question(
-        `Do you want to install ${toInstall.join(
-          ' and ',
-        )} using Chocolatey? (y/n): `,
-        async answer => {
-          rl.close();
-          if (answer.toLowerCase() === 'y') {
-            const installCmd = `choco install ${toInstall.join(' ')} -y`;
-            console.log(`\nExecuting: ${installCmd}\n`);
-            exec(installCmd, (error, stdout, stderr) => {
-              if (error) {
-                console.error(`Error during installation: ${error.message}`);
-              } else {
-                console.log('Installation completed successfully.');
-              }
-            });
+      if (isNonInteractive()) {
+        console.log(
+          'Non-interactive environment detected. Proceeding with installation.',
+        );
+        const installCmd = `choco install ${toInstall.join(' ')} -y`;
+        console.log(`\nExecuting: ${installCmd}\n`);
+        exec(installCmd, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Error during installation: ${error.message}`);
           } else {
-            console.log('Installation aborted by the user.');
-            showManualInstallationGuide();
+            console.log('Installation completed successfully.');
           }
-        },
-      );
+        });
+      } else {
+        const rl = readline.createInterface({
+          input: process.stdin,
+          output: process.stdout,
+        });
+
+        rl.question(
+          `Do you want to install ${toInstall.join(' and ')} using Chocolatey? (y/n): `,
+          async answer => {
+            rl.close();
+            if (answer.toLowerCase() === 'y') {
+              const installCmd = `choco install ${toInstall.join(' ')} -y`;
+              console.log(`\nExecuting: ${installCmd}\n`);
+              exec(installCmd, (error, stdout, stderr) => {
+                if (error) {
+                  console.error(`Error during installation: ${error.message}`);
+                } else {
+                  console.log('Installation completed successfully.');
+                }
+              });
+            } else {
+              console.log('Installation aborted by the user.');
+              showManualInstallationGuide();
+            }
+          },
+        );
+      }
     } else {
       console.log('Chocolatey is not installed.\n');
       showManualInstallationGuide();
@@ -108,33 +133,46 @@ async function guideMac() {
       if (!isGmInstalled) toInstall.push('graphicsmagick');
       if (!isGsInstalled) toInstall.push('ghostscript');
 
-      const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-      });
-
-      rl.question(
-        `Do you want to install ${toInstall.join(
-          ' and ',
-        )} using Homebrew? (y/n): `,
-        async answer => {
-          rl.close();
-          if (answer.toLowerCase() === 'y') {
-            const installCmd = `brew install ${toInstall.join(' ')}`;
-            console.log(`\nExecuting: ${installCmd}\n`);
-            exec(installCmd, error => {
-              if (error) {
-                console.error(`Error during installation: ${error.message}`);
-              } else {
-                console.log('Installation completed successfully.');
-              }
-            });
+      if (isNonInteractive()) {
+        console.log(
+          'Non-interactive environment detected. Proceeding with installation.',
+        );
+        const installCmd = `brew install ${toInstall.join(' ')}`;
+        console.log(`\nExecuting: ${installCmd}\n`);
+        exec(installCmd, error => {
+          if (error) {
+            console.error(`Error during installation: ${error.message}`);
           } else {
-            console.log('Installation aborted by the user.');
-            showManualInstallationGuide();
+            console.log('Installation completed successfully.');
           }
-        },
-      );
+        });
+      } else {
+        const rl = readline.createInterface({
+          input: process.stdin,
+          output: process.stdout,
+        });
+
+        rl.question(
+          `Do you want to install ${toInstall.join(' and ')} using Homebrew? (y/n): `,
+          async answer => {
+            rl.close();
+            if (answer.toLowerCase() === 'y') {
+              const installCmd = `brew install ${toInstall.join(' ')}`;
+              console.log(`\nExecuting: ${installCmd}\n`);
+              exec(installCmd, error => {
+                if (error) {
+                  console.error(`Error during installation: ${error.message}`);
+                } else {
+                  console.log('Installation completed successfully.');
+                }
+              });
+            } else {
+              console.log('Installation aborted by the user.');
+              showManualInstallationGuide();
+            }
+          },
+        );
+      }
     } else {
       console.log('Homebrew is not installed.\n');
       showManualInstallationGuide();
@@ -158,43 +196,61 @@ async function guideLinux() {
       if (!isGmInstalled) toInstall.push('graphicsmagick');
       if (!isGsInstalled) toInstall.push('ghostscript');
 
+      const sudoAvailable = await isSudoAvailable();
+      const sudoCmd = sudoAvailable ? 'sudo ' : '';
+
       const installCommands = {
-        'apt-get': `sudo apt-get update && sudo apt-get install -y ${toInstall.join(
-          ' ',
-        )}`,
-        yum: `sudo yum install -y ${toInstall.join(' ')}`,
-        dnf: `sudo dnf install -y ${toInstall.join(' ')}`,
-        pacman: `sudo pacman -Sy ${toInstall.join(' ')}`,
-        zypper: `sudo zypper install -y ${toInstall.join(' ')}`,
+        'apt-get': `${sudoCmd}apt-get update && ${sudoCmd}apt-get install -y ${toInstall.join(' ')}`,
+        yum: `${sudoCmd}yum install -y ${toInstall.join(' ')}`,
+        dnf: `${sudoCmd}dnf install -y ${toInstall.join(' ')}`,
+        pacman: `${sudoCmd}pacman -Sy --noconfirm ${toInstall.join(' ')}`,
+        zypper: `${sudoCmd}zypper install -y ${toInstall.join(' ')}`,
       };
 
-      const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-      });
-
-      rl.question(
-        `Do you want to install ${toInstall.join(
-          ' and ',
-        )} using ${packageManager}? (y/n): `,
-        async answer => {
-          rl.close();
-          if (answer.toLowerCase() === 'y') {
-            const installCmd = installCommands[packageManager];
-            console.log(`\nExecuting: ${installCmd}\n`);
-            exec(installCmd, error => {
-              if (error) {
-                console.error(`Error during installation: ${error.message}`);
-              } else {
-                console.log('Installation completed successfully.');
-              }
-            });
-          } else {
-            console.log('Installation aborted by the user.');
+      if (isNonInteractive()) {
+        console.log(
+          'Non-interactive environment detected. Proceeding with installation.',
+        );
+        const installCmd = installCommands[packageManager];
+        console.log(`\nExecuting: ${installCmd}\n`);
+        exec(installCmd, error => {
+          if (error) {
+            console.error(`Error during installation: ${error.message}`);
+            console.log(
+              'Installation failed. Please install the packages manually.',
+            );
             showManualInstallationGuide();
+          } else {
+            console.log('Installation completed successfully.');
           }
-        },
-      );
+        });
+      } else {
+        const rl = readline.createInterface({
+          input: process.stdin,
+          output: process.stdout,
+        });
+
+        rl.question(
+          `Do you want to install ${toInstall.join(' and ')} using ${packageManager}? (y/n): `,
+          async answer => {
+            rl.close();
+            if (answer.toLowerCase() === 'y') {
+              const installCmd = installCommands[packageManager];
+              console.log(`\nExecuting: ${installCmd}\n`);
+              exec(installCmd, error => {
+                if (error) {
+                  console.error(`Error during installation: ${error.message}`);
+                } else {
+                  console.log('Installation completed successfully.');
+                }
+              });
+            } else {
+              console.log('Installation aborted by the user.');
+              showManualInstallationGuide();
+            }
+          },
+        );
+      }
     } else {
       console.log(
         'No supported package manager found. Please install the packages manually.',
