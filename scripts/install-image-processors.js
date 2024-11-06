@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const os = require('os');
-const { exec } = require('child_process');
+const {exec} = require('child_process');
 
 async function main() {
   try {
@@ -20,29 +20,38 @@ async function main() {
         break;
       default:
         console.log('Unsupported platform:', platform);
-        console.log('Please install GraphicsMagick and Ghostscript manually from:');
-        console.log('GraphicsMagick: http://www.graphicsmagick.org/download.html');
-        console.log('Ghostscript: https://www.ghostscript.com/download/gsdnld.html');
+        console.log(
+          'Please install GraphicsMagick and Ghostscript manually from:',
+        );
+        console.log(
+          'GraphicsMagick: http://www.graphicsmagick.org/download.html',
+        );
+        console.log(
+          'Ghostscript: https://www.ghostscript.com/download/gsdnld.html',
+        );
     }
   } catch (error) {
     console.log('Please install GraphicsMagick and Ghostscript manually from:');
-    console.log('GraphicsMagick: http://www.graphicsmagick.org/download.html'); 
-    console.log('Ghostscript: https://www.ghostscript.com/download/gsdnld.html');
+    console.log('GraphicsMagick: http://www.graphicsmagick.org/download.html');
+    console.log(
+      'Ghostscript: https://www.ghostscript.com/download/gsdnld.html',
+    );
   }
 }
-
 
 async function guideWindows() {
   console.log('Checking installation on Windows...\n');
 
   const isGmInstalled = await checkIfInstalled('gm', ['-version']);
   const isGsInstalled =
-    await checkIfInstalled('gswin64c', ['--version']) ||
-    await checkIfInstalled('gswin32c', ['--version']);
+    (await checkIfInstalled('gswin64c', ['--version'])) ||
+    (await checkIfInstalled('gswin32c', ['--version']));
 
   if (!isGmInstalled) {
     console.log('GraphicsMagick is not installed.\n');
-    console.log('Please download and install GraphicsMagick from the official website:');
+    console.log(
+      'Please download and install GraphicsMagick from the official website:',
+    );
     console.log('http://www.graphicsmagick.org/download.html\n');
   } else {
     console.log('GraphicsMagick is already installed.\n');
@@ -50,13 +59,14 @@ async function guideWindows() {
 
   if (!isGsInstalled) {
     console.log('Ghostscript is not installed.\n');
-    console.log('Please download and install Ghostscript from the official website:');
+    console.log(
+      'Please download and install Ghostscript from the official website:',
+    );
     console.log('https://www.ghostscript.com/download/gsdnld.html\n');
   } else {
     console.log('Ghostscript is already installed.\n');
   }
 }
-
 
 async function guideMac() {
   console.log('Checking installation on macOS...\n');
@@ -80,18 +90,24 @@ async function guideMac() {
     const isBrewInstalled = await checkIfInstalled('brew', ['--version']);
     if (isBrewInstalled) {
       if (!isGmInstalled) {
-        console.log('You can install GraphicsMagick using Homebrew with the following command:');
+        console.log(
+          'You can install GraphicsMagick using Homebrew with the following command:',
+        );
         console.log('brew install graphicsmagick\n');
       }
       if (!isGsInstalled) {
-        console.log('You can install Ghostscript using Homebrew with the following command:');
+        console.log(
+          'You can install Ghostscript using Homebrew with the following command:',
+        );
         console.log('brew install ghostscript\n');
       }
     } else {
       console.log('Homebrew is not installed.\n');
       console.log('Please install GraphicsMagick and Ghostscript manually.\n');
       console.log('GraphicsMagick download: http://www.graphicsmagick.org\n');
-      console.log('Ghostscript download: https://www.ghostscript.com/download/gsdnld.html\n');
+      console.log(
+        'Ghostscript download: https://www.ghostscript.com/download/gsdnld.html\n',
+      );
     }
   }
 }
@@ -105,10 +121,14 @@ async function guideLinux() {
   const packageManager = await detectPackageManager();
 
   if (!packageManager) {
-    console.log('No supported package manager found. Please install GraphicsMagick and Ghostscript manually.');
+    console.log(
+      'No supported package manager found. Please install GraphicsMagick and Ghostscript manually.',
+    );
   } else {
     if (!isGmInstalled || !isGsInstalled) {
-      console.log(`You can install the necessary packages using ${packageManager}.\n`);
+      console.log(
+        `You can install the necessary packages using ${packageManager}.\n`,
+      );
       console.log('Required packages: graphicsmagick, ghostscript\n');
 
       const commands = {
@@ -135,8 +155,8 @@ async function guideLinux() {
 }
 
 async function checkIfInstalled(command, args = []) {
-  return new Promise((resolve) => {
-    exec(`${command} ${args.join(' ')}`, (error) => {
+  return new Promise(resolve => {
+    exec(`${command} ${args.join(' ')}`, error => {
       resolve(!error);
     });
   });
