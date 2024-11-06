@@ -1,3 +1,13 @@
+
+
+## [0.3.4](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.3...0.3.4) (2024-11-06)
+
+
+### 🔧 Maintenance
+
+* changelog ([8c2c3c1](https://github.com/arshad-yaseen/ocr-llm/commit/8c2c3c1925eaf10c416e97204ac59f6af7df011f))
+* readme ([c2628c4](https://github.com/arshad-yaseen/ocr-llm/commit/c2628c492a47e24edc4eeb7e999400a37cb1e6f5))
+
 ## [0.3.2](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.1...0.3.2) (2024-11-06)
 
 ### 🔧 Maintenance
