@@ -1,11 +1,17 @@
 
 
-## [0.3.11](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.10...0.3.11) (2024-11-06)
+## [0.3.12](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.11...0.3.12) (2024-11-06)
 
 
 ### 🔧 Maintenance
 
-* website ([534aaf6](https://github.com/arshad-yaseen/ocr-llm/commit/534aaf677520e5c9a8ee6000b0a93c89237c1c5c))
+* **website:** increase api max duration ([e205c2d](https://github.com/arshad-yaseen/ocr-llm/commit/e205c2df08daef4111b811aac676aee93fe1d6ff))
+
+## [0.3.11](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.10...0.3.11) (2024-11-06)
+
+### 🔧 Maintenance
+
+- website ([534aaf6](https://github.com/arshad-yaseen/ocr-llm/commit/534aaf677520e5c9a8ee6000b0a93c89237c1c5c))
 
 ## [0.3.10](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.9...0.3.10) (2024-11-06)
 
