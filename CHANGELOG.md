@@ -1,13 +1,19 @@
 
 
-## [0.3.1](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.0...0.3.1) (2024-11-06)
+## [0.3.2](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.1...0.3.2) (2024-11-06)
 
 
 ### 🔧 Maintenance
 
-* improve script ([a4b50da](https://github.com/arshad-yaseen/ocr-llm/commit/a4b50da0600f42de5cfffdc2682cc569b7c5def6))
-* remove postinstall script ([ef76011](https://github.com/arshad-yaseen/ocr-llm/commit/ef76011e54dfdeb433a93e1459385037508bfa61))
-* updat ([88bb2f0](https://github.com/arshad-yaseen/ocr-llm/commit/88bb2f048ebda6c25a00073765648ee59faaa4b5))
+* include scripts in build ([f9cabd3](https://github.com/arshad-yaseen/ocr-llm/commit/f9cabd31087613e8d4e986693af512283a067749))
+
+## [0.3.1](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.0...0.3.1) (2024-11-06)
+
+### 🔧 Maintenance
+
+- improve script ([a4b50da](https://github.com/arshad-yaseen/ocr-llm/commit/a4b50da0600f42de5cfffdc2682cc569b7c5def6))
+- remove postinstall script ([ef76011](https://github.com/arshad-yaseen/ocr-llm/commit/ef76011e54dfdeb433a93e1459385037508bfa61))
+- updat ([88bb2f0](https://github.com/arshad-yaseen/ocr-llm/commit/88bb2f048ebda6c25a00073765648ee59faaa4b5))
 
 ## 0.3.0 (2024-11-06)
 
