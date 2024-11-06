@@ -111,7 +111,7 @@ const ContentDisplay = ({
                   className,
                   ...props
                 }: React.HTMLAttributes<HTMLTableElement>) => (
-                  <div className="w-full overflow-hidden rounded-lg border border-neutral-300">
+                  <div className="w-full overflow-hidden rounded-lg border border-neutral-200">
                     <table
                       className={cn('w-full !my-0', className)}
                       {...props}
@@ -165,8 +165,8 @@ const Landing = ({
         </h1>
         <p className="text-lg sm:text-xl text-neutral-500 leading-relaxed max-w-2xl mx-auto">
           Fast, ultra-accurate text extraction from any image or PDF—including
-          challenging <br className="hidden sm:block" />
-          ones—with structured markdown output powered by vision models.
+          challenging ones—with structured markdown output powered by vision
+          models.
         </p>
       </div>
       <FileUpload onUpload={onUpload} />
@@ -216,10 +216,10 @@ export default function Home() {
         </header>
         <main className="flex-1 min-h-0 px-4 sm:px-6 md:px-8 lg:px-12 py-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
-            <div className="bg-background rounded-xl border border-neutral-300 overflow-hidden">
+            <div className="bg-background rounded-xl border border-neutral-200 overflow-hidden">
               <Preview url={previewUrl} type={fileType} />
             </div>
-            <div className="bg-background rounded-xl border border-neutral-300 overflow-hidden">
+            <div className="bg-background rounded-xl border border-neutral-200 overflow-hidden">
               <ContentDisplay contents={contents} isLoading={isLoading} />
             </div>
           </div>
