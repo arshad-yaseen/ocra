@@ -27,7 +27,7 @@ Fast, ultra-accurate text extraction from any image or PDF—including challengi
 
 ## Prerequisites
 
-OcrLLM requires GraphicsMagick and Ghostscript for PDF processing. These dependencies are typically installed automatically when you install the package, especially on macOS and Linux. However, if the automatic installation fails, you may need to install them manually. To ensure they are installed, you can run the following commands:
+OcrLLM requires GraphicsMagick and Ghostscript for PDF processing. These dependencies are typically installed automatically when you install the package, especially on macOS. However, if the automatic installation fails, you may need to install them manually. To ensure they are installed, you can run the following commands:
 
 For GraphicsMagick:
 
