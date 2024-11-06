@@ -62,6 +62,8 @@ Download and install the following:
 sudo apt-get update && sudo apt-get install -y graphicsmagick ghostscript
 ```
 
+The methods mentioned above are the most common ones, but feel free to install GraphicsMagick and Ghostscript in any way that suits you best. The important thing is to ensure that both GraphicsMagick and Ghostscript are successfully installed on your system. Happy installing!
+
 ## Installation
 
 ```bash
