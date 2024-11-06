@@ -25,7 +25,8 @@
     "remark-gfm": "^4.0.0",
     "remark-math": "^6.0.0",
     "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "ocrllm": "0.2.0"
   },
   "devDependencies": {
     "@types/node": "^20",
