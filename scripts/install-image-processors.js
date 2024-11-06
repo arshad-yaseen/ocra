@@ -202,8 +202,8 @@ async function guideLinux() {
 
       const installCommands = {
         'apt-get': `${sudoCmd}apt-get update && ${sudoCmd}apt-get install -y ${toInstall.join(' ')}`,
-        yum: `${sudoCmd}yum install -y ${toInstall.join(' ')}`,
         dnf: `${sudoCmd}dnf install -y ${toInstall.join(' ')}`,
+        yum: `${sudoCmd}yum install -y ${toInstall.join(' ')}`,
         pacman: `${sudoCmd}pacman -Sy --noconfirm ${toInstall.join(' ')}`,
         zypper: `${sudoCmd}zypper install -y ${toInstall.join(' ')}`,
       };
@@ -278,11 +278,16 @@ async function checkIfInstalled(command, args = []) {
 }
 
 async function detectPackageManager() {
-  const managers = ['apt-get', 'yum', 'dnf', 'pacman', 'zypper'];
-  for (const manager of managers) {
-    if (await checkIfInstalled(manager, ['--version'])) {
-      return manager;
-    }
+  if (await checkIfInstalled('apt-get', ['--version'])) {
+    return 'apt-get';
+  } else if (await checkIfInstalled('dnf', ['--version'])) {
+    return 'dnf';
+  } else if (await checkIfInstalled('yum', ['--version'])) {
+    return 'yum';
+  } else if (await checkIfInstalled('pacman', ['--version'])) {
+    return 'pacman';
+  } else if (await checkIfInstalled('zypper', ['--version'])) {
+    return 'zypper';
   }
   return null;
 }
