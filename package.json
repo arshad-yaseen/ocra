@@ -6,7 +6,8 @@
   "module": "./build/index.mjs",
   "types": "./build/index.d.ts",
   "files": [
-    "build"
+    "build",
+    "scripts"
   ],
   "scripts": {
     "build": "tsup src/index.ts",
