@@ -1,5 +1,7 @@
 import {OcrLLM} from 'ocr-llm';
 
+export const maxDuration = 60;
+
 const ocrllm = new OcrLLM({
   provider: 'openai',
   key: process.env.OPENAI_API_KEY!,
