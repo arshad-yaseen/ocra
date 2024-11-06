@@ -28,7 +28,7 @@ Fast, ultra-accurate text extraction from any image or PDF—including challengi
 
 ## Prerequisites
 
-OcrLLM requires GraphicsMagick and Ghostscript to be installed on your system for PDF processing.
+OcrLLM requires GraphicsMagick and Ghostscript for PDF processing. These dependencies will attempt to install automatically after you install the package. However, if automatic installation fails, you may need to install them manually:
 
 ### macOS
 
@@ -103,9 +103,9 @@ try {
 
 ## Used Models
 
-| Provider | Model       |
-| -------- | ----------- |
-| OpenAI   | gpt-4o-mini |
+| Provider | Model       | Description                                                                                       |
+| -------- | ----------- | ------------------------------------------------------------------------------------------------- |
+| OpenAI   | gpt-4o-mini | High-performance model optimized for efficient text extraction with excellent accuracy and speed. |
 
 ## Contributing
 
