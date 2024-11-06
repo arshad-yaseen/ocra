@@ -12,8 +12,8 @@ describe('OcrLLM exports', () => {
     const expectedExports = [
       'OcrLLM',
       'OcrLLMConfig',
-      'ImageResult',
       'PageResult',
+      'ImageResult',
       'InputSource',
       'OCRMetadata',
       'Provider',
