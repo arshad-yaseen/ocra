@@ -86,7 +86,9 @@ async function installPackage(command, packageName) {
 }
 
 function showManualInstallationGuide() {
-  console.log('\nPlease install the required packages manually:');
+  console.log(
+    '\nCannot install image processors automatically, please install the required packages manually:',
+  );
   console.log('GraphicsMagick: http://www.graphicsmagick.org/download.html');
   console.log('Ghostscript: https://www.ghostscript.com/download/gsdnld.html');
 }
