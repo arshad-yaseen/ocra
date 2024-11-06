@@ -1,19 +1,25 @@
 
 
-## [0.3.5](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.4...0.3.5) (2024-11-06)
-
-
-### 🔧 CI/CD
-
-* update workflow ([e2103b9](https://github.com/arshad-yaseen/ocr-llm/commit/e2103b9d5f4f20f93f01094366686929d287ef10))
+## [0.3.6](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.5...0.3.6) (2024-11-06)
 
 
 ### 🔧 Maintenance
 
-* add public dir ([63ef9df](https://github.com/arshad-yaseen/ocr-llm/commit/63ef9df60cc326469f65a22e7df071ed5433a693))
-* improve readme ([1f4e3da](https://github.com/arshad-yaseen/ocr-llm/commit/1f4e3dadb20b6a1326bb9e6be06e1df06890ee35))
-* improve readme ([1c5afc3](https://github.com/arshad-yaseen/ocr-llm/commit/1c5afc3036e75fa6335f17219ee997c602c7a5d1))
-* imrove script ([847819e](https://github.com/arshad-yaseen/ocr-llm/commit/847819e0cf7deec2465753d1339ce5e6b48b1140))
+* improve script ([e689d39](https://github.com/arshad-yaseen/ocr-llm/commit/e689d399b69c4dedfce167740f3a9c94a52f526b))
+* update script ([a92da8d](https://github.com/arshad-yaseen/ocr-llm/commit/a92da8d9b49224c807c21d64298ff37d543651bb))
+
+## [0.3.5](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.4...0.3.5) (2024-11-06)
+
+### 🔧 CI/CD
+
+- update workflow ([e2103b9](https://github.com/arshad-yaseen/ocr-llm/commit/e2103b9d5f4f20f93f01094366686929d287ef10))
+
+### 🔧 Maintenance
+
+- add public dir ([63ef9df](https://github.com/arshad-yaseen/ocr-llm/commit/63ef9df60cc326469f65a22e7df071ed5433a693))
+- improve readme ([1f4e3da](https://github.com/arshad-yaseen/ocr-llm/commit/1f4e3dadb20b6a1326bb9e6be06e1df06890ee35))
+- improve readme ([1c5afc3](https://github.com/arshad-yaseen/ocr-llm/commit/1c5afc3036e75fa6335f17219ee997c602c7a5d1))
+- imrove script ([847819e](https://github.com/arshad-yaseen/ocr-llm/commit/847819e0cf7deec2465753d1339ce5e6b48b1140))
 
 ## [0.3.4](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.3...0.3.4) (2024-11-06)
 
