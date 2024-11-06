@@ -1,11 +1,17 @@
 
 
-## [0.3.7](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.6...0.3.7) (2024-11-06)
+## [0.3.8](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.7...0.3.8) (2024-11-06)
 
 
 ### 🔧 Maintenance
 
-* update script ([b592a5d](https://github.com/arshad-yaseen/ocr-llm/commit/b592a5d5ce5737e6ba4c3d11d4edefefde21815d))
+* update script ([df0e0fc](https://github.com/arshad-yaseen/ocr-llm/commit/df0e0fc0915450ec8ac1ddc4dd5df0f5d5370cf8))
+
+## [0.3.7](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.6...0.3.7) (2024-11-06)
+
+### 🔧 Maintenance
+
+- update script ([b592a5d](https://github.com/arshad-yaseen/ocr-llm/commit/b592a5d5ce5737e6ba4c3d11d4edefefde21815d))
 
 ## [0.3.6](https://github.com/arshad-yaseen/ocr-llm/compare/0.3.5...0.3.6) (2024-11-06)
 
