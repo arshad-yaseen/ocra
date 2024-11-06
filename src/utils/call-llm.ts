@@ -12,7 +12,7 @@ import {
   createProviderHeaders,
   createRequestBody,
   parseProviderChatCompletion,
-} from './providers';
+} from './provider';
 
 /**
  * Calls the Language Model to extract text from the image.

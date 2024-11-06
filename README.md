@@ -23,7 +23,6 @@ Fast, ultra-accurate text extraction from images and PDFs with structured markdo
 - [Input Sources](#input-sources)
 - [API Reference](#api-reference)
 - [Error Handling](#error-handling)
-- [How it Works](#how-it-works)
 - [Used Models](#used-models)
 - [Contributing](#contributing)
 
@@ -101,24 +100,6 @@ try {
   console.error('Processing failed:', error.message);
 }
 ```
-
-## How it Works
-
-Ocra processes documents in several steps:
-
-1. **Input Processing**
-
-   - Validates and normalizes input (file, URL, base64, or buffer)
-   - Converts PDFs to high-quality images for processing
-
-2. **Text Extraction**
-
-   - Sends images to the selected provider's vision model
-   - Processes multiple pages concurrently for PDFs
-
-3. **Output Formatting**
-   - Structures extracted text as clean markdown
-   - Includes metadata about the processing
 
 ## Used Models
 
