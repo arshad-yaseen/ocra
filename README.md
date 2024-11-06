@@ -1,6 +1,6 @@
 # OcrLLM
 
-Fast, ultra-accurate text extraction from images and PDFs with structured markdown output.
+Fast, ultra-accurate text extraction from any image or PDF—including challenging ones—with structured markdown output powered by vision models.
 
 ## Features
 

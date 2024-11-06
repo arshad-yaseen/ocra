@@ -164,9 +164,9 @@ const Landing = ({
           OcrLLM
         </h1>
         <p className="text-lg sm:text-xl text-neutral-500 leading-relaxed max-w-2xl mx-auto">
-          Fast, ultra-accurate text extraction from any image{' '}
-          <br className="hidden sm:block" />
-          or PDF, even challenging ones, with structured markdown output.
+          Fast, ultra-accurate text extraction from any image or PDF—including
+          challenging <br className="hidden sm:block" />
+          ones—with structured markdown output powered by vision models.
         </p>
       </div>
       <FileUpload onUpload={onUpload} />
