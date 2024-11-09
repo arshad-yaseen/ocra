@@ -9,6 +9,7 @@ import {ConcurrencyLimit} from '../classes/concurrency-limit';
 import {MAX_CONCURRENT_REQUESTS} from '../constants';
 import {_pm, report} from '../logger';
 import {InputSource, PageResult, Provider} from '../types';
+import {getBufferFromInput} from '../utils/buffer';
 import {processImage} from './image';
 
 /**
@@ -30,30 +31,7 @@ export async function processPdf(
   const processingLimiter = new ConcurrencyLimit(MAX_CONCURRENT_REQUESTS);
 
   try {
-    // Save input to temporary PDF file
-    let pdfBuffer: Buffer;
-
-    if (typeof input === 'string') {
-      try {
-        if (input.startsWith('http')) {
-          const response = await fetch(input);
-          if (!response.ok) {
-            throw new Error(
-              `Failed to fetch PDF: ${response.status} ${response.statusText}`,
-            );
-          }
-          pdfBuffer = Buffer.from(await response.arrayBuffer());
-        } else if (input.startsWith('data:application/pdf')) {
-          pdfBuffer = Buffer.from(input.split(',')[1], 'base64');
-        } else {
-          pdfBuffer = await fs.readFile(input);
-        }
-      } catch (error: unknown) {
-        throw new Error(`Failed to read PDF input: ${_pm(error)}`);
-      }
-    } else {
-      pdfBuffer = input;
-    }
+    const pdfBuffer = await getBufferFromInput(input);
 
     if (!pdfBuffer?.length) {
       throw new Error('Empty or invalid PDF buffer');

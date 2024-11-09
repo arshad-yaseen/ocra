@@ -1,7 +1,6 @@
-import {promises as fs} from 'fs';
-
 import {_pm, report} from '../logger';
 import {ImageResult, InputSource, Provider} from '../types';
+import {getBufferFromInput} from '../utils/buffer';
 import {callLLM} from '../utils/call-llm';
 import {removeCodeBlockMarkers} from '../utils/string';
 
@@ -17,29 +16,7 @@ export async function processImage(
   apiKey: string,
 ): Promise<ImageResult> {
   try {
-    let imageBuffer: Buffer;
-
-    if (typeof input === 'string') {
-      try {
-        if (input.startsWith('http')) {
-          const response = await fetch(input);
-          if (!response.ok) {
-            throw new Error(
-              `Failed to fetch image: ${response.status} ${response.statusText}`,
-            );
-          }
-          imageBuffer = Buffer.from(await response.arrayBuffer());
-        } else if (input.startsWith('data:image')) {
-          imageBuffer = Buffer.from(input.split(',')[1], 'base64');
-        } else {
-          imageBuffer = await fs.readFile(input);
-        }
-      } catch (error: unknown) {
-        throw new Error(`Failed to read image input: ${_pm(error)}`);
-      }
-    } else {
-      imageBuffer = input;
-    }
+    const imageBuffer = await getBufferFromInput(input);
 
     if (!imageBuffer?.length) {
       throw new Error('Empty or invalid image buffer');
